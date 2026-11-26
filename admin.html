@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffd426">
+  <title>খাতা ঘর | অ্যাডমিন ড্যাশবোর্ড</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --yellow: #ffd426;
+      --yellow-dark: #e8b900;
+      --ink: #18345f;
+      --muted: #667085;
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --surface-soft: #fffdf5;
+      --line: #e9ecf2;
+      --green-bg: #dcfce7;
+      --green-text: #15803d;
+      --amber-bg: #fef3c7;
+      --amber-text: #b45309;
+      --red-bg: #fee2e2;
+      --red-text: #b91c1c;
+      --shadow: 0 8px 24px rgba(24, 52, 95, 0.05);
+    }
+
+    body.dark {
+      --ink: #f1f5f9;
+      --muted: #94a3b8;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-soft: #172033;
+      --line: #334155;
+      --green-bg: rgba(21, 128, 61, 0.25);
+      --green-text: #4ade80;
+      --amber-bg: rgba(180, 83, 9, 0.25);
+      --amber-text: #fbbf24;
+      --red-bg: rgba(185, 28, 28, 0.25);
+      --red-text: #f87171;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Hind Siliguri", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 255px;
+      background: var(--surface);
+      border-right: 1px solid var(--line);
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 40;
+      transition: transform 0.25s ease;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 4px 8px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: var(--yellow);
+      color: #18345f;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      font-weight: 900;
+      box-shadow: 0 3px 0 var(--yellow-dark);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 1.15rem;
+      line-height: 1.1;
+    }
+
+    .brand small {
+      font-family: "Nunito", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.15s;
+    }
+
+    .menu a:hover {
+      background: var(--surface-soft);
+      color: var(--ink);
+    }
+
+    .menu a.active {
+      background: var(--yellow);
+      color: #18345f;
+      font-weight: 700;
+    }
+
+    .menu-badge {
+      font-family: "Nunito", sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #18345f;
+      color: #ffffff;
+    }
+
+    .sidebar-footer {
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+    }
+
+    .sidebar-footer small {
+      display: block;
+      color: var(--muted);
+    }
+
+    /* Main Wrapper */
+    .main-wrap {
+      flex: 1;
+      margin-left: 255px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Top Bar */
+    .topbar {
+      height: 68px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 25;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .menu-btn {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .search-box {
+      position: relative;
+      width: min(360px, 100%);
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 14px 9px 36px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      font-family: inherit;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--yellow-dark);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 1rem;
+    }
+
+    .notif-dot {
+      position: absolute;
+      top: 8px;
+      right: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 10px;
+      border-left: 1px solid var(--line);
+    }
+
+    .admin-profile img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--yellow);
+    }
+
+    .admin-profile strong {
+      display: block;
+      font-size: 0.92rem;
+      line-height: 1.15;
+    }
+
+    .admin-profile small {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--yellow);
+      color: #18345f;
+      border: none;
+      border-radius: 11px;
+      padding: 10px 16px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 0 var(--yellow-dark);
+      transition: transform 0.12s, filter 0.15s;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.98);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 9px 14px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--yellow-dark);
+    }
+
+    .btn-restock {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 4px 9px;
+      font-family: "Nunito", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .btn-restock:hover {
+      background: var(--yellow);
+      color: #18345f;
+      border-color: var(--yellow-dark);
+    }
+
+    .btn-delete {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 4px 9px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .btn-delete:hover {
+      background: var(--red-bg);
+      color: var(--red-text);
+      border-color: rgba(185, 28, 28, 0.25);
+    }
+
+    /* Content */
+    .content {
+      padding: 24px;
+      display: grid;
+      gap: 24px;
+      max-width: 1320px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .page-head h1 {
+      margin: 0;
+      font-size: 1.55rem;
+    }
+
+    .page-head p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .head-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill-date {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    /* 4 Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: #fff4b8;
+      color: #18345f;
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+    }
+
+    .stat-value {
+      font-family: "Nunito", sans-serif;
+      font-size: 1.75rem;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .stat-meta {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .up {
+      color: var(--green-text);
+      font-weight: 700;
+    }
+
+    /* Chart & Low Stock */
+    .mid-grid {
+      display: grid;
+      grid-template-columns: 1.65fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-head h2 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .card-head small {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .table-tools {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .filter-pills {
+      display: inline-flex;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .filter-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.84rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .filter-btn.active {
+      background: var(--yellow);
+      color: #18345f;
+    }
+
+    .chart-box {
+      position: relative;
+      height: 260px;
+      width: 100%;
+    }
+
+    .stock-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stock-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 13px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+
+    .stock-item strong {
+      display: block;
+      font-size: 0.96rem;
+    }
+
+    .stock-item span {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .stock-right {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+    }
+
+    .stock-qty {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      background: var(--red-bg);
+      color: var(--red-text);
+    }
+
+    .stock-qty.warn {
+      background: var(--amber-bg);
+      color: var(--amber-text);
+    }
+
+    /* Recent Orders Table */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.92rem;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      background: var(--bg);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      border: 1px solid transparent;
+      transition: transform 0.12s, filter 0.15s;
+    }
+
+    .badge:hover {
+      transform: scale(1.04);
+      filter: brightness(0.97);
+    }
+
+    .badge:active {
+      transform: scale(0.97);
+    }
+
+    .badge.pending {
+      background: var(--amber-bg);
+      color: var(--amber-text);
+      border-color: rgba(180, 83, 9, 0.2);
+    }
+
+    .badge.delivered {
+      background: var(--green-bg);
+      color: var(--green-text);
+      border-color: rgba(21, 128, 61, 0.2);
+    }
+
+    .badge.cancelled {
+      background: var(--red-bg);
+      color: var(--red-text);
+      border-color: rgba(185, 28, 28, 0.2);
+    }
+
+    /* Modal Form */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 50;
+      place-items: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: grid;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      width: min(460px, 100%);
+      padding: 22px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.18s ease;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 13px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.94rem;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--yellow-dark);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .status-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #18345f;
+      color: #ffffff;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 60;
+    }
+
+    .status-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      z-index: 30;
+    }
+
+    @media (max-width: 1050px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .mid-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .menu-btn {
+        display: grid;
+        place-items: center;
+      }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .overlay.show {
+        display: block;
+      }
+      .main-wrap {
+        margin-left: 0;
+      }
+      .admin-info {
+        display: none;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .content {
+        padding: 16px;
+        gap: 16px;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .topbar {
+        padding: 0 14px;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div>
+        <div class="brand">
+          <div class="brand-mark">📚</div>
+          <div>
+            <strong>খাতা ঘর</strong>
+            <small>KHATA GHOR ADMIN</small>
+          </div>
+        </div>
+
+        <ul class="menu">
+          <li><a href="#dashboard" class="active"><span>📊 Dashboard</span></a></li>
+          <li><a href="#orders"><span>📦 Orders</span><span class="menu-badge" id="sidebarPendingBadge">2</span></a></li>
+          <li><a href="#products"><span>✏️ Products</span></a></li>
+          <li><a href="#customers"><span>👨‍👩‍👧 Customers</span></a></li>
+          <li><a href="#settings"><span>⚙️ Settings</span></a></li>
+           <a href="index.html">🛍️ শপ দেখুন</a>
+        </ul>
+      </div>
+
+      <div class="sidebar-footer">
+        <small>আজকের তারিখ</small>
+        <strong>২৬ নভেম্বর, ২০২৬</strong>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrap">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="মেনু খুলুন">☰</button>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="search" id="searchInput" placeholder="অর্ডার আইডি বা কাস্টমার খুঁজুন..." oninput="renderOrders()">
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button class="icon-btn" onclick="toggleDarkMode()" title="Dark Mode পরিবর্তন করুন" aria-label="Dark Mode">🌓</button>
+          <button class="icon-btn" title="নোটিফিকেশন" aria-label="নোটিফিকেশন">
+            🔔<span class="notif-dot"></span>
+          </button>
+          <div class="admin-profile">
+            <img src="https://ui-avatars.com/api/?name=Rafiq+Ahmed&background=ffd426&color=18345f&bold=true" alt="অ্যাডমিন">
+            <div class="admin-info">
+              <strong>রফিক আহমেদ</strong>
+              <small>স্বত্বাধিকারী · খাতা ঘর</small>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content" id="dashboard">
+        <div class="page-head">
+          <div>
+            <h1>ড্যাশবোর্ড ওভারভিউ</h1>
+            <p>খাতা ও স্টেশনারি বিক্রির দৈনিক হিসাব, অর্ডার ও স্টকের অবস্থা</p>
+          </div>
+          <div class="head-actions">
+            <div class="pill-date">বৃহস্পতিবার · ২৬ নভে, ২০২৬</div>
+            <button type="button" class="btn-secondary" onclick="resetDemoData()" title="ডিফল্ট ডেটায় ফিরে যান">↺ রিসেট ডেটা</button>
+            <button type="button" class="btn-primary" onclick="openOrderModal()">+ নতুন অর্ডার</button>
+          </div>
+        </div>
+
+        <!-- 4 Stats Cards -->
+        <section class="stats-grid" aria-label="মূল পরিসংখ্যান">
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">আজকের বিক্রি</span>
+              <span class="stat-icon">৳</span>
+            </div>
+            <div class="stat-value" id="todaySalesValue">৳ ২,৪৪৭</div>
+            <div class="stat-meta">টেবিলের সক্রিয় অর্ডার অনুযায়ী</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">মোট অর্ডার</span>
+              <span class="stat-icon">📦</span>
+            </div>
+            <div class="stat-value" id="totalOrdersValue">৬ টি</div>
+            <div class="stat-meta"><span class="up" id="deliveredCountText">৩টি Delivered</span> · সাম্প্রতিক অর্ডার</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">নতুন কাস্টমার</span>
+              <span class="stat-icon">🎒</span>
+            </div>
+            <div class="stat-value" id="newCustomersValue">১১ জন</div>
+            <div class="stat-meta">অভিভাবক ও শিক্ষার্থী</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span class="stat-label">পেন্ডিং অর্ডার</span>
+              <span class="stat-icon">⏳</span>
+            </div>
+            <div class="stat-value" id="pendingOrdersValue">২ টি</div>
+            <div class="stat-meta">স্ট্যাটাসে ক্লিক করে বদলান</div>
+          </div>
+        </section>
+
+        <!-- Chart & Low Stock -->
+        <section class="mid-grid">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2>সাপ্তাহিক বিক্রির গ্রাফ</h2>
+                <small>গত ৭ দিনের মোট বিক্রি (টাকা)</small>
+              </div>
+              <small id="weeklyTotalText">সর্বমোট: ৳ ৭৪,২১৭</small>
+            </div>
+            <div class="chart-box">
+              <canvas id="salesChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card" id="products">
+            <div class="card-head">
+              <div>
+                <h2>Low Stock সতর্কতা</h2>
+                <small>অর্ডারে স্টক কমে; `+১` দিয়ে রিস্টক করুন</small>
+              </div>
+            </div>
+            <div class="stock-list" id="stockList"></div>
+          </div>
+        </section>
+
+        <!-- Recent Orders Table -->
+        <section class="card" id="orders">
+          <div class="card-head">
+            <div>
+              <h2>Recent Orders</h2>
+              <small>স্ট্যাটাস ব্যাজে ক্লিক করে পরিবর্তন করুন বা ফিল্টার ব্যবহার করুন</small>
+            </div>
+
+            <div class="table-tools">
+              <div class="filter-pills" role="group" aria-label="স্ট্যাটাস ফিল্টার">
+                <button type="button" class="filter-btn active" data-filter="All" onclick="setStatusFilter('All')">All</button>
+                <button type="button" class="filter-btn" data-filter="Pending" onclick="setStatusFilter('Pending')">Pending</button>
+                <button type="button" class="filter-btn" data-filter="Delivered" onclick="setStatusFilter('Delivered')">Delivered</button>
+                <button type="button" class="filter-btn" data-filter="Cancelled" onclick="setStatusFilter('Cancelled')">Cancelled</button>
+              </div>
+
+              <button type="button" class="btn-secondary" onclick="downloadOrdersCSV()">⬇ CSV ডাউনলোড</button>
+              <button type="button" class="btn-primary" onclick="openOrderModal()">+ নতুন অর্ডার</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table id="ordersTable">
+              <thead>
+                <tr>
+                  <th>অর্ডার আইডি</th>
+                  <th>কাস্টমারের নাম</th>
+                  <th>পণ্য</th>
+                  <th>তারিখ</th>
+                  <th>মোট দাম</th>
+                  <th>স্ট্যাটাস</th>
+                  <th>মুছুন</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add New Order Modal -->
+  <div class="modal-backdrop" id="orderModal" onclick="handleBackdropClick(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h3 id="modalTitle">🛍️ নতুন অর্ডার যোগ করুন</h3>
+        <button type="button" class="close-modal" onclick="closeOrderModal()" aria-label="বন্ধ করুন">✕</button>
+      </div>
+
+      <form id="newOrderForm" onsubmit="addNewOrder(event)">
+        <div class="form-group">
+          <label for="custName">কাস্টমারের নাম ও এলাকা *</label>
+          <input type="text" id="custName" required placeholder="যেমন: আয়শা সিদ্দিকা (ধানমন্ডি, ঢাকা)">
+        </div>
+
+        <div class="form-group">
+          <label for="prodSelect">পণ্য নির্বাচন করুন *</label>
+          <select id="prodSelect" onchange="autoFillPrice()" required>
+            <option value="স্কুল কিট (১০ খাতা + স্টেশনারি)" data-price="499" data-stock-key="school_kit">স্কুল কিট (১০ খাতা + স্টেশনারি) — ৳ ৪৯৯</option>
+            <option value="খাতা ও নোটবুক (৬টি সেট)" data-price="570" data-stock-key="notebook">খাতা ও নোটবুক (৬টি সেট) — ৳ ৫৭০</option>
+            <option value="জ্যামিতি বক্স ও পেন্সিল সেট" data-price="380" data-stock-key="geometry_box">জ্যামিতি বক্স ও পেন্সিল সেট — ৳ ৩৮০</option>
+            <option value="১২ রঙের রঙ পেন্সিল বক্স" data-price="160" data-stock-key="color_pencil">১২ রঙের রঙ পেন্সিল বক্স — ৳ ১৬০</option>
+            <option value="রঙিন কভার নোটবুক (২০০ পৃষ্ঠা)" data-price="95" data-stock-key="notebook">রঙিন কভার নোটবুক (২০০ পৃষ্ঠা) — ৳ ৯৫</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="orderAmount">মোট দাম (৳) *</label>
+            <input type="number" id="orderAmount" min="1" value="499" required>
+          </div>
+
+          <div class="form-group">
+            <label for="orderStatus">অর্ডার স্ট্যাটাস *</label>
+            <select id="orderStatus">
+              <option value="Pending">Pending</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeOrderModal()">বাতিল</button>
+          <button type="submit" class="btn-primary">অর্ডার সেভ করুন</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="status-toast" id="statusToast"></div>
+
+  <script>
+    const STORAGE_KEY = "khata_ghor_dashboard_v1";
+    const STATUS_CYCLE = ["Pending", "Delivered", "Cancelled"];
+    const baseWeeklySales = [10800, 12400, 9850, 13200, 11900, 13620];
+
+    const DEFAULT_STATE = {
+      nextOrderNumber: 1043,
+      newCustomersCount: 11,
+      activeFilter: "All",
+      stocks: [
+        { key: "school_kit", name: "স্কুল কিট (১০ খাতা + স্টেশনারি)", price: 499, qty: 3, unit: "সেট" },
+        { key: "geometry_box", name: "জ্যামিতি বক্স (মেটাল সেট)", price: 220, qty: 6, unit: "পিস" },
+        { key: "color_pencil", name: "১২ রঙের রঙ পেন্সিল বক্স", price: 160, qty: 8, unit: "বক্স" },
+        { key: "notebook", name: "রঙিন কভার নোটবুক (২০০ পৃষ্ঠা)", price: 95, qty: 12, unit: "টি" }
+      ],
+      orders: [
+        { id: "#KG-1042", customer: "নুসরাত জাহান (মিরপুর, ঢাকা)", product: "স্কুল কিট (১০ খাতা + স্টেশনারি)", date: "২৬ নভে, ২০২৬", amount: 499, status: "Pending" },
+        { id: "#KG-1041", customer: "তানভীর আহমেদ (চাষাঢ়া, নারায়ণগঞ্জ)", product: "খাতা ও নোটবুক (৬টি সেট)", date: "২৬ নভে, ২০২৬", amount: 570, status: "Delivered" },
+        { id: "#KG-1040", customer: "সাবিনা ইয়াসমিন (উত্তরা, ঢাকা)", product: "জ্যামিতি বক্স ও পেন্সিল সেট", date: "২৫ নভে, ২০২৬", amount: 380, status: "Delivered" },
+        { id: "#KG-1039", customer: "রফিকুল ইসলাম (গাজীপুর)", product: "স্কুল কিট (২ সেট)", date: "২৫ নভে, ২০২৬", amount: 998, status: "Pending" },
+        { id: "#KG-1038", customer: "মাহমুদা আক্তার (চট্টগ্রাম)", product: "রঙ পেন্সিল ও আঁকার খাতা", date: "২৪ নভে, ২০২৬", amount: 320, status: "Cancelled" },
+        { id: "#KG-1037", customer: "ফারহানা চৌধুরী (সিলেট)", product: "খাতা ও নোটবুক (১০টি সেট)", date: "২৪ নভে, ২০২৬", amount: 850, status: "Delivered" }
+      ]
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(DEFAULT_STATE);
+        const parsed = JSON.parse(raw);
+        return {
+          ...structuredClone(DEFAULT_STATE),
+          ...parsed,
+          stocks: Array.isArray(parsed.stocks) ? parsed.stocks : structuredClone(DEFAULT_STATE.stocks),
+          orders: Array.isArray(parsed.orders) ? parsed.orders : structuredClone(DEFAULT_STATE.orders)
+        };
+      } catch (e) {
+        return structuredClone(DEFAULT_STATE);
+      }
+    }
+
+    let state = loadState();
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        // Ignore storage quota errors
+      }
+    }
+
+    function resetDemoData() {
+      state = structuredClone(DEFAULT_STATE);
+      saveState();
+      syncFilterButtons();
+      renderAll();
+      showToast("ডিফল্ট ডেটা পুনরুদ্ধার করা হয়েছে!");
+    }
+
+    function formatBdt(num) {
+      return "৳ " + Number(num).toLocaleString("bn-BD");
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("statusToast");
+      toast.textContent = text;
+      toast.classList.add("show");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function openOrderModal() {
+      document.getElementById("orderModal").classList.add("open");
+      document.getElementById("custName").focus();
+    }
+
+    function closeOrderModal() {
+      document.getElementById("orderModal").classList.remove("open");
+    }
+
+    function handleBackdropClick(event) {
+      if (event.target.id === "orderModal") {
+        closeOrderModal();
+      }
+    }
+
+    function autoFillPrice() {
+      const select = document.getElementById("prodSelect");
+      const price = select.options[select.selectedIndex].dataset.price;
+      if (price) {
+        document.getElementById("orderAmount").value = price;
+      }
+    }
+
+    function addNewOrder(event) {
+      event.preventDefault();
+      const customer = document.getElementById("custName").value.trim();
+      const select = document.getElementById("prodSelect");
+      const product = select.value;
+      const stockKey = select.options[select.selectedIndex].dataset.stockKey;
+      const amount = Number(document.getElementById("orderAmount").value);
+      const status = document.getElementById("orderStatus").value;
+
+      if (!customer || amount <= 0) return;
+
+      const newOrder = {
+        id: `#KG-${state.nextOrderNumber++}`,
+        customer,
+        product,
+        date: "২৬ নভে, ২০২৬",
+        amount,
+        status
+      };
+
+      state.orders.unshift(newOrder);
+      state.newCustomersCount += 1;
+
+      const matchedStock = state.stocks.find(s => s.key === stockKey);
+      if (matchedStock && matchedStock.qty > 0) {
+        matchedStock.qty -= 1;
+      }
+
+      saveState();
+      document.getElementById("newOrderForm").reset();
+      autoFillPrice();
+      closeOrderModal();
+      renderAll();
+      showToast(`নতুন অর্ডার ${newOrder.id} যুক্ত হয়েছে ও স্টক আপডেট হয়েছে!`);
+    }
+
+    function restockItem(index) {
+      state.stocks[index].qty += 1;
+      saveState();
+      renderStockList();
+      showToast(`${state.stocks[index].name} স্টক ১টি বাড়ানো হয়েছে`);
+    }
+
+    function deleteOrder(index) {
+      const removed = state.orders[index];
+      state.orders.splice(index, 1);
+      saveState();
+      renderAll();
+      showToast(`অর্ডার ${removed.id} মুছে ফেলা হয়েছে`);
+    }
+
+    function setStatusFilter(filterName) {
+      state.activeFilter = filterName;
+      saveState();
+      syncFilterButtons();
+      renderOrders();
+    }
+
+    function syncFilterButtons() {
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.filter === state.activeFilter);
+      });
+    }
+
+    function renderStockList() {
+      const container = document.getElementById("stockList");
+      container.innerHTML = "";
+
+      state.stocks.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "stock-item";
+
+        let badgeText = `বাকি ${item.qty.toLocaleString("bn-BD")} ${item.unit}`;
+        let extraClass = "";
+
+        if (item.qty === 0) {
+          badgeText = "স্টক শেষ!";
+        } else if (item.qty > 4) {
+          extraClass = "warn";
+        }
+
+        div.innerHTML = `
+          <div>
+            <strong>${item.name}</strong>
+            <span>মূল্য: ${formatBdt(item.price)}</span>
+          </div>
+          <div class="stock-right">
+            <span class="stock-qty ${extraClass}">${badgeText}</span>
+            <button type="button" class="btn-restock" title="স্টক ১টি বাড়ান" onclick="restockItem(${index})">+১</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderOrders() {
+      const tbody = document.getElementById("ordersBody");
+      tbody.innerHTML = "";
+
+      const q = document.getElementById("searchInput").value.toLowerCase().trim();
+
+      state.orders.forEach((order, index) => {
+        const matchesFilter = state.activeFilter === "All" || order.status === state.activeFilter;
+        const matchesSearch = !q || `${order.id} ${order.customer} ${order.product}`.toLowerCase().includes(q);
+
+        if (!matchesFilter || !matchesSearch) return;
+
+        const tr = document.createElement("tr");
+        const badgeClass = order.status.toLowerCase();
+        tr.innerHTML = `
+          <td><strong>${order.id}</strong></td>
+          <td>${order.customer}</td>
+          <td>${order.product}</td>
+          <td>${order.date}</td>
+          <td><strong>${formatBdt(order.amount)}</strong></td>
+          <td>
+            <button type="button" class="badge ${badgeClass}" title="স্ট্যাটাস বদলাতে ক্লিক করুন" onclick="cycleStatus(${index})">
+              ${order.status} ↻
+            </button>
+          </td>
+          <td>
+            <button type="button" class="btn-delete" title="অর্ডার মুছুন" onclick="deleteOrder(${index})">🗑</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      if (!tbody.children.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px;">কোনো অর্ডার খুঁজে পাওয়া যায়নি।</td></tr>`;
+      }
+    }
+
+    function cycleStatus(index) {
+      const current = state.orders[index].status;
+      const nextIndex = (STATUS_CYCLE.indexOf(current) + 1) % STATUS_CYCLE.length;
+      const nextStatus = STATUS_CYCLE[nextIndex];
+      state.orders[index].status = nextStatus;
+      saveState();
+      renderAll();
+      showToast(`${state.orders[index].id} স্ট্যাটাস পরিবর্তন হয়ে "${nextStatus}" হয়েছে`);
+    }
+
+    function updateStatsAndChart() {
+      const activeOrders = state.orders.filter(o => o.status !== "Cancelled");
+      const todaySales = activeOrders.reduce((sum, o) => sum + o.amount, 0);
+      const pendingCount = state.orders.filter(o => o.status === "Pending").length;
+      const deliveredCount = state.orders.filter(o => o.status === "Delivered").length;
+
+      document.getElementById("todaySalesValue").textContent = formatBdt(todaySales);
+      document.getElementById("totalOrdersValue").textContent = `${state.orders.length.toLocaleString("bn-BD")} টি`;
+      document.getElementById("deliveredCountText").textContent = `${deliveredCount.toLocaleString("bn-BD")}টি Delivered`;
+      document.getElementById("newCustomersValue").textContent = `${state.newCustomersCount.toLocaleString("bn-BD")} জন`;
+      document.getElementById("pendingOrdersValue").textContent = `${pendingCount.toLocaleString("bn-BD")} টি`;
+      document.getElementById("sidebarPendingBadge").textContent = pendingCount.toLocaleString("bn-BD");
+
+      const updatedSeries = [...baseWeeklySales, todaySales];
+      const weeklyTotal = updatedSeries.reduce((a, b) => a + b, 0);
+      document.getElementById("weeklyTotalText").textContent = `সর্বমোট: ${formatBdt(weeklyTotal)}`;
+
+      salesChart.data.datasets[0].data = updatedSeries;
+      salesChart.update();
+    }
+
+    function downloadOrdersCSV() {
+      const headers = ["অর্ডার আইডি", "কাস্টমারের নাম", "পণ্য", "তারিখ", "মোট দাম (৳)", "স্ট্যাটাস"];
+      const rows = state.orders.map(o => [
+        o.id,
+        o.customer,
+        o.product,
+        o.date,
+        o.amount,
+        o.status
+      ]);
+
+      const escapeCsv = val => {
+        const str = String(val ?? "");
+        return `"${str.replace(/"/g, '""')}"`;
+      };
+
+      const csvContent = [headers, ...rows]
+        .map(row => row.map(escapeCsv).join(","))
+        .join("\r\n");
+
+      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "khata-ghor-orders.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast("অর্ডার তালিকা CSV ফাইল হিসেবে ডাউনলোড হয়েছে!");
+    }
+
+    function renderAll() {
+      renderStockList();
+      renderOrders();
+      updateStatsAndChart();
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
+      document.getElementById("overlay").classList.toggle("show");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      updateChartColors();
+    }
+
+    const ctx = document.getElementById("salesChart").getContext("2d");
+    const salesChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["শনি", "রবি", "সোম", "মঙ্গল", "বুধ", "বৃহঃ", "আজ"],
+        datasets: [{
+          label: "বিক্রি (৳)",
+          data: [...baseWeeklySales, 0],
+          backgroundColor: "#ffd426",
+          hoverBackgroundColor: "#e8b900",
+          borderRadius: 8,
+          maxBarThickness: 36
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: val => "৳" + val.toLocaleString("bn-BD")
+            }
+          },
+          x: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    function updateChartColors() {
+      const isDark = document.body.classList.contains("dark");
+      const tickColor = isDark ? "#cbd5e1" : "#667085";
+      const gridColor = isDark ? "rgba(148, 163, 184, 0.15)" : "rgba(0, 0, 0, 0.06)";
+      salesChart.options.scales.x.ticks.color = tickColor;
+      salesChart.options.scales.y.ticks.color = tickColor;
+      salesChart.options.scales.y.grid.color = gridColor;
+      salesChart.update();
+    }
+
+    syncFilterButtons();
+    updateChartColors();
+    renderAll();
+  </script>
+</body>
+</html>

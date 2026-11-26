@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffd426">
+  <title>খাতা ঘর | Khata Ghor — স্কুলের খাতা ও স্টেশনারি</title>
+  <meta name="description" content="বাচ্চাদের স্কুলের খাতা, পেন্সিল, কলম, জ্যামিতি বক্স ও স্টেশনারি কিট অনলাইনে অর্ডার করুন।">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #ffd426;
+      --yellow-dark: #f0b900;
+      --cream: #fffbed;
+      --ink: #18345f;
+      --muted: #667085;
+      --pink: #ff5d79;
+      --green: #159b61;
+      --line: #f1e7bf;
+      --shadow: 0 14px 36px rgba(63, 49, 0, .09);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--ink); background: #fffdf5;
+      font-family: "Hind Siliguri", sans-serif; line-height: 1.55;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(1120px, calc(100% - 32px)); margin: auto; }
+    .top-strip { background: var(--ink); color: white; text-align: center; padding: 7px 12px; font-size: .92rem; }
+    .top-strip strong { color: var(--yellow); }
+    header { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.96); border-bottom: 1px solid #f4ebc9; backdrop-filter: blur(10px); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 13px 0; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.25rem; line-height: 1.1; }
+    .brand-mark { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 15px; background: var(--yellow); font-size: 1.7rem; box-shadow: 0 5px 0 #e8b900; }
+    .brand small { display: block; color: var(--muted); font: 700 .7rem "Nunito", sans-serif; margin-top: 4px; }
+    .nav-links { display: flex; align-items: center; gap: 22px; font-weight: 600; }
+    .nav-links a:hover { color: #b88700; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 999px; padding: 12px 20px; font-weight: 800; cursor: pointer; transition: transform .18s, box-shadow .18s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px #d9b32438; }
+    .btn-yellow { background: var(--yellow); color: #24334c; box-shadow: 0 5px 0 #e8b900; }
+    .btn-dark { background: var(--ink); color: white; }
+    .btn-white { background: white; color: var(--ink); border: 1px solid var(--line); }
+    .hero { position: relative; overflow: hidden; padding: 58px 0 54px; background: radial-gradient(circle at 85% 20%, #fff2a6 0 9%, transparent 28%), linear-gradient(120deg, #fff9df, #fff 57%, #fff4b5); }
+    .hero:before, .hero:after { content: "✦"; position: absolute; color: var(--yellow-dark); font-size: 3rem; opacity: .7; }
+    .hero:before { top: 25px; left: 5%; transform: rotate(-15deg); }
+    .hero:after { bottom: 22px; right: 5%; transform: rotate(12deg); }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 36px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 7px; background: white; border: 1px solid #f5df75; border-radius: 99px; padding: 7px 13px; font-weight: 700; color: #8b6900; font-size: .92rem; }
+    h1 { font-size: clamp(2.3rem, 5vw, 4.2rem); line-height: 1.12; margin: 18px 0 16px; letter-spacing: -.5px; }
+    h1 span { color: #e8ae00; }
+    .hero p { font-size: 1.12rem; color: #53627b; max-width: 520px; margin: 0 0 25px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; }
+    .mini-points { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 25px; font-size: .94rem; font-weight: 600; }
+    .mini-points span { display: flex; gap: 6px; align-items: center; }
+    .hero-art { position: relative; }
+    .hero-photo { width: 100%; height: 420px; object-fit: cover; border-radius: 34px; border: 8px solid white; box-shadow: var(--shadow); }
+    .floating-note { position: absolute; background: white; border-radius: 18px; padding: 12px 16px; box-shadow: var(--shadow); font-weight: 800; }
+    .floating-note small { display: block; color: var(--muted); font-weight: 600; }
+    .note-one { left: -18px; top: 28px; transform: rotate(-5deg); }
+    .note-two { right: -12px; bottom: 26px; transform: rotate(4deg); }
+    section { padding: 66px 0; }
+    .section-head { text-align: center; max-width: 680px; margin: 0 auto 32px; }
+    .section-head .kicker { color: #bd8e00; font-weight: 800; }
+    h2 { font-size: clamp(1.8rem, 3.3vw, 2.6rem); line-height: 1.2; margin: 7px 0 10px; }
+    .section-head p { color: var(--muted); margin: 0; }
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .category { background: white; border: 1px solid var(--line); border-radius: 22px; padding: 15px; text-align: center; box-shadow: 0 7px 22px #715c0b0a; transition: transform .2s; }
+    .category:hover { transform: translateY(-5px); }
+    .category img { height: 145px; width: 100%; object-fit: cover; border-radius: 15px; background: #fff8d9; }
+    .category h3 { margin: 12px 0 3px; font-size: 1.15rem; }
+    .category p { margin: 0; color: var(--muted); font-size: .92rem; }
+    .offer-section { background: #fff4b8; }
+    .offer-box { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center; background: white; padding: 28px; border-radius: 30px; box-shadow: var(--shadow); border: 2px dashed #f3d348; }
+    .offer-tag { display: inline-block; background: var(--pink); color: white; padding: 7px 14px; border-radius: 9px; font-weight: 800; transform: rotate(-2deg); }
+    .offer-box h2 { font-size: clamp(2rem, 4vw, 3.1rem); }
+    .price-row { display: flex; align-items: baseline; gap: 12px; margin: 16px 0 20px; }
+    .price { font: 900 2.5rem "Nunito", sans-serif; color: #e94b66; }
+    .old-price { color: #9ca3af; text-decoration: line-through; }
+    .offer-image { width: 100%; height: 300px; object-fit: cover; border-radius: 22px; }
+    .offer-details { color: var(--muted); padding-left: 20px; }
+    .offer-details li { margin: 6px 0; }
+    .video-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 35px; align-items: center; }
+    .video-card { background: #fff8d9; border: 8px solid white; outline: 1px solid var(--line); border-radius: 26px; padding: 12px; box-shadow: var(--shadow); }
+    .video-frame { width: 100%; aspect-ratio: 16 / 9; background: #1e3356; border-radius: 16px; overflow: hidden; position: relative; display: grid; place-items: center; color: white; }
+    .video-frame img { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: .82; }
+    .play-btn { position: relative; z-index: 1; width: 68px; height: 68px; border: 0; border-radius: 50%; background: var(--yellow); color: var(--ink); font-size: 1.5rem; cursor: pointer; box-shadow: 0 0 0 10px #ffffff55; }
+    .video-caption { padding: 12px 5px 2px; font-weight: 700; }
+    .video-caption small { display: block; color: var(--muted); font-weight: 500; }
+    .video-side p { color: var(--muted); }
+
+    /* Customer Reviews Section */
+    .reviews-section { background: #fffdf5; padding-top: 10px; }
+    .rating-summary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: white; border: 1px solid var(--line); border-radius: 999px;
+      padding: 8px 16px; margin-top: 12px; font-weight: 700; font-size: .95rem;
+      box-shadow: 0 6px 18px rgba(63, 49, 0, .05);
+    }
+    .rating-summary .stars { color: #f5b400; letter-spacing: 1px; }
+    .review-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    .review-card {
+      background: white; border: 1px solid var(--line); border-radius: 22px;
+      padding: 22px; box-shadow: 0 8px 24px rgba(113, 92, 11, .06);
+      display: flex; flex-direction: column; justify-content: space-between; gap: 16px;
+      transition: transform .2s;
+    }
+    .review-card:hover { transform: translateY(-4px); }
+    .review-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .review-stars { color: #f5b400; font-size: 1rem; letter-spacing: 1px; }
+    .review-tag {
+      font-size: .78rem; font-weight: 700; color: #8b6900;
+      background: #fff6cc; border: 1px solid #f4e296; border-radius: 99px;
+      padding: 3px 10px; white-space: nowrap;
+    }
+    .review-quote { margin: 0; color: #36455f; font-size: .98rem; line-height: 1.65; }
+    .reviewer-meta {
+      display: flex; align-items: center; gap: 12px;
+      padding-top: 12px; border-top: 1px dashed #efe5be;
+    }
+    .reviewer-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: #fff2b2; color: var(--ink); font-weight: 800;
+      display: grid; place-items: center; flex-shrink: 0; font-size: 1rem;
+    }
+    .reviewer-meta strong { display: block; font-size: 1rem; color: var(--ink); }
+    .reviewer-meta small { display: block; color: var(--muted); font-size: .84rem; }
+
+    .payment-strip { background: #fffdf5; padding-top: 0; }
+    .payment-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .payment { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 18px 12px; text-align: center; }
+    .payment .emoji { font-size: 1.8rem; }
+    .payment strong { display: block; margin: 5px 0 2px; }
+    .payment small { color: var(--muted); }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .trust-card { padding: 22px; background: white; border: 1px solid var(--line); border-radius: 20px; text-align: center; }
+    .trust-card .emoji { font-size: 2rem; }
+    .trust-card h3 { margin: 8px 0 4px; }
+    .trust-card p { color: var(--muted); margin: 0; }
+    .order-section { background: linear-gradient(135deg, #ffdf40, #fff3a8); }
+    .order-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 34px; align-items: start; }
+    .order-intro p { color: #5b5b43; }
+    .contact-list { display: grid; gap: 10px; margin-top: 22px; }
+    .contact-link { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 15px; background: white; font-weight: 800; }
+    .contact-link span { font-size: 1.35rem; }
+    .order-form { background: white; border-radius: 24px; padding: 25px; box-shadow: var(--shadow); }
+    .order-form h3 { margin: 0 0 16px; font-size: 1.45rem; }
+    .field { margin-bottom: 13px; }
+    label { display: block; font-weight: 700; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; border: 1px solid #e6e7eb; border-radius: 12px; padding: 12px 13px; background: #fffefa; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: #e7bd15; box-shadow: 0 0 0 3px #ffd42635; }
+    .pay-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .pay-option { display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; font-weight: 700; cursor: pointer; }
+    .pay-option input { width: auto; accent-color: #e5b900; }
+    .form-note { font-size: .85rem; color: var(--muted); margin: 12px 0; }
+    footer { background: var(--ink); color: white; padding: 30px 0; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; align-items: center; flex-wrap: wrap; }
+    footer p { color: #d5dfef; margin: 5px 0 0; }
+    .socials { display: flex; gap: 10px; }
+    .socials a { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: white; color: var(--ink); font-weight: 900; }
+    .tiny { font-size: .82rem; color: #c6d1e4; margin-top: 18px; }
+    .toast { display:none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: white; padding: 12px 18px; border-radius: 12px; z-index: 50; max-width: calc(100% - 24px); box-shadow: var(--shadow); }
+    @media (max-width: 850px) {
+      .nav-links { display: none; }
+      .hero-grid, .offer-box, .video-layout, .order-grid { grid-template-columns: 1fr; }
+      .review-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 38px; }
+      .hero-photo { height: 340px; }
+      .note-one { left: 5px; }
+      .note-two { right: 4px; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+      .offer-image { height: 260px; }
+    }
+    @media (max-width: 520px) {
+      .container { width: min(100% - 22px, 1120px); }
+      .nav { padding: 10px 0; }
+      .brand { font-size: 1.05rem; }
+      .brand-mark { width: 42px; height: 42px; }
+      .nav > .btn { padding: 10px 13px; font-size: .9rem; }
+      .hero-photo { height: 275px; border-width: 5px; border-radius: 25px; }
+      .hero-actions .btn { width: 100%; }
+      section { padding: 48px 0; }
+      .category-grid { gap: 11px; }
+      .category { padding: 10px; border-radius: 17px; }
+      .category img { height: 112px; }
+      .offer-box { padding: 17px; }
+      .payment-grid { grid-template-columns: repeat(2, 1fr); }
+      .trust-grid { grid-template-columns: 1fr; }
+      .order-form { padding: 18px; }
+      .pay-options { grid-template-columns: 1fr; }
+      .floating-note { padding: 8px 11px; font-size: .88rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-strip">🎒 ছোট্ট শিক্ষার্থীদের জন্য বড় আনন্দ! <strong>নির্বাচিত স্কুল কিটে বিশেষ অফার</strong> — আজই অর্ডার করুন</div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="খাতা ঘর হোম">
+        <span class="brand-mark">📚</span>
+        <span>খাতা ঘর<small>KHATA GHOR · পড়াশোনার সবকিছু</small></span>
+      </a>
+      <nav class="nav-links" aria-label="মূল নেভিগেশন">
+        <a href="#products">পণ্য</a><a href="#offer">বিশেষ অফার</a><a href="#reviews">রিভিউ</a><a href="#payment">পেমেন্ট</a><a href="#contact">যোগাযোগ</a>
+      </nav>
+      <a class="btn btn-yellow" href="#order">🛍️ অর্ডার করুন</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">⭐ ছোট্ট স্বপ্ন, রঙিন পড়াশোনা</div>
+          <h1>স্কুলের খাতা ও <span>স্টেশনারির</span> সেরা ঠিকানা!</h1>
+          <p>খাতা, পেন্সিল, রঙ পেন্সিল, জ্যামিতি বক্স আর মজার স্কুল কিট—সব এক জায়গায়। বাচ্চাদের পড়াশোনা হোক আরও রঙিন!</p>
+          <div class="hero-actions">
+            <a class="btn btn-yellow" href="#products">🎨 পণ্য দেখুন</a>
+            <a class="btn btn-dark" href="#offer">🎁 বিশেষ অফার</a>
+          </div>
+          <div class="mini-points">
+            <span>✅ মানসম্মত পণ্য</span><span>🚚 ডেলিভারি সুবিধা</span><span>💵 COD সুবিধা</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <img class="hero-photo" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=85" alt="স্কুলে পড়াশোনা করছে শিশুরা">
+          <div class="floating-note note-one">🌈 পড়াশোনা হোক মজার!<small>রঙিন স্টেশনারি কালেকশন</small></div>
+          <div class="floating-note note-two">🎁 দারুণ স্কুল কিট<small>ছোট্ট শিক্ষার্থীদের জন্য</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="container">
+        <div class="section-head"><div class="kicker">🖍️ আমাদের কালেকশন</div><h2>যা যা লাগবে স্কুলের জন্য</h2><p>প্রতিদিনের পড়াশোনা থেকে শুরু করে আঁকা ও প্রজেক্ট—সব প্রয়োজনীয় জিনিস একসাথে।</p></div>
+        <div class="category-grid">
+          <a class="category" href="#order" data-product="খাতা ও নোটবুক">
+            <img src="https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=600&q=80" alt="খাতা ও নোটবুক">
+            <h3>📒 খাতা ও নোটবুক</h3><p>বিভিন্ন সাইজ ও ডিজাইন</p>
+          </a>
+          <a class="category" href="#order" data-product="পেন্সিল ও কলম">
+            <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80" alt="রঙ পেন্সিল ও আঁকার সামগ্রী">
+            <h3>✏️ পেন্সিল ও কলম</h3><p>লেখা ও আঁকার সঙ্গী</p>
+          </a>
+          <a class="category" href="#order" data-product="জ্যামিতি বক্স">
+            <img src="https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=600&q=80" alt="স্কুলের স্টেশনারি সামগ্রী">
+            <h3>📐 জ্যামিতি বক্স</h3><p>গণিতের দরকারি উপকরণ</p>
+          </a>
+          <a class="category" href="#order" data-product="স্কুল কিট">
+            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=600&q=80" alt="স্কুলের ব্যাগ ও শিক্ষা উপকরণ">
+            <h3>🎒 স্কুল কিট</h3><p>এক প্যাকেটে প্রয়োজনীয় জিনিস</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="offer-section" id="offer">
+      <div class="container">
+        <div class="offer-box">
+          <div>
+            <span class="offer-tag">🎉 বিশেষ অফার</span>
+            <h2>স্কুল কিটে <span style="color:#ed4b68">সাশ্রয়ী</span> কেনাকাটা!</h2>
+            <p>খাতা ও বাছাই করা স্টেশনারি একসাথে নিন। পরিবারের বাজেটের মধ্যে পড়াশোনার প্রস্তুতি সহজ করুন।</p>
+            <ul class="offer-details">
+              <li>১০টি খাতা ও নির্বাচিত স্টেশনারি</li>
+              <li>প্যাকেজিংসহ সুন্দরভাবে প্রস্তুত</li>
+              <li>অর্ডারের আগে পণ্যের তালিকা নিশ্চিত করুন</li>
+            </ul>
+            <div class="price-row"><span class="price">৳৪৯৯</span><span class="old-price">৳৫৯৯</span><span>প্রস্তাবিত অফার মূল্য*</span></div>
+            <a class="btn btn-yellow" href="#order">🎁 অফারটি অর্ডার করুন</a>
+            <p style="font-size:.82rem;color:#7b7b69;margin-top:12px">*এটি নমুনা মূল্য। প্রকাশের আগে প্রকৃত পণ্যের তালিকা, দাম ও অফারের শর্ত আপডেট করুন।</p>
+          </div>
+          <img class="offer-image" src="https://images.unsplash.com/photo-1453738773917-9c3eff1db985?auto=format&fit=crop&w=1000&q=85" alt="রঙিন স্কুল স্টেশনারি ও নোটবুক">
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews">
+      <div class="container video-layout">
+        <div class="video-card">
+          <div class="video-frame" id="videoFrame">
+            <img src="https://images.unsplash.com/photo-1455390582262-044c2d73e2c0?auto=format&fit=crop&w=1000&q=80" alt="পণ্যের ভিডিও রিভিউ প্রিভিউ" onerror="this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=85'">
+            <button class="play-btn" id="playVideo" aria-label="রিভিউ ভিডিও চালান">▶</button>
+          </div>
+          <div class="video-caption">🎬 আমাদের পণ্যের রিভিউ ভিডিও <small>আসল পণ্যের ভিডিও এখানে যুক্ত করুন</small></div>
+        </div>
+        <div class="video-side">
+          <div class="kicker">💛 কেন খাতা ঘর?</div>
+          <h2>অর্ডারের আগে দেখে নিন, বুঝে নিন</h2>
+          <p>এই অংশে আপনার নিজের পণ্যের ছোট ভিডিও বা ক্রেতার অনুমতিসহ রিভিউ ভিডিও দেখাতে পারবেন। পণ্যের মান, সাইজ, রঙ ও প্যাকেজের ভেতরে কী আছে তা ভিডিওতে দেখান।</p>
+          <ul class="offer-details">
+            <li>📦 প্যাকিং ও পণ্যের ক্লোজ-আপ</li>
+            <li>⭐ ক্রেতার মতামত (অনুমতি নিয়ে)</li>
+            <li>🎥 স্কুল কিট আনবক্সিং ভিডিও</li>
+          </ul>
+          <a class="btn btn-dark" href="#contact">📩 ভিডিও বা রিভিউ জানতে যোগাযোগ</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ক্রেতাদের রিভিউ সেকশন -->
+    <section class="reviews-section" id="customer-reviews">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">💬 ক্রেতাদের মতামত</div>
+          <h2>অভিভাবক ও শিক্ষার্থীদের রিভিউ</h2>
+          <p>খাতা ঘর থেকে পণ্য নিয়ে সন্তুষ্ট ক্রেতাদের কিছু অভিজ্ঞতা নিচে তুলে ধরা হলো।</p>
+          <div class="rating-summary">
+            <span class="stars">★★★★★</span>
+            <span>৪.৯ / ৫ গড় রেটিং · ১৫০+ সন্তুষ্ট ক্রেতা</span>
+          </div>
+        </div>
+
+        <div class="review-grid">
+          <article class="review-card">
+            <div>
+              <div class="review-top">
+                <div class="review-stars" aria-label="৫ তারকা রেটিং">★★★★★</div>
+                <span class="review-tag">স্কুল কিট</span>
+              </div>
+              <p class="review-quote">“মেয়ের ক্লাস টু-এর জন্য স্কুল কিট অর্ডার করেছিলাম। খাতার কাগজের মান বেশ ভালো, কালি ছড়ায় না। প্যাকেজিংটাও খুব পরিপাটি ছিল।”[cite: 1]</p>
+            </div>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">ন</div>
+              <div>
+                <strong>নুসরাত জাহান</strong>
+                <small>মিরপুর, ঢাকা · যাচাইকৃত ক্রেতা</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="review-card">
+            <div>
+              <div class="review-top">
+                <div class="review-stars" aria-label="৫ তারকা রেটিং">★★★★★</div>
+                <span class="review-tag">খাতা ও নোটবুক</span>
+              </div>
+              <p class="review-quote">“বাজারের অনেক খাতার চেয়ে এখানকার খাতাগুলো মজবুত। দামও সাধ্যের মধ্যে। ক্যাশ অন ডেলিভারিতে সময়মতো হাতে পেয়েছি।”[cite: 1]</p>
+            </div>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">ত</div>
+              <div>
+                <strong>তানভীর আহমেদ</strong>
+                <small>নারায়ণগঞ্জ · যাচাইকৃত ক্রেতা</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="review-card">
+            <div>
+              <div class="review-top">
+                <div class="review-stars" aria-label="৫ তারকা রেটিং">★★★★★</div>
+                <span class="review-tag">জ্যামিতি বক্স ও পেন্সিল</span>
+              </div>
+              <p class="review-quote">“ছেলে জ্যামিতি বক্স আর রঙ পেন্সিল পেয়ে ভীষণ খুশি। আঁকার কাজে পেন্সিলগুলো বেশ স্মুথ, সহজে ভেঙে যায় না। আবারও নেব ইনশাআল্লাহ।”[cite: 1]</p>
+            </div>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">স</div>
+              <div>
+                <strong>সাবিনা ইয়াসমিন</strong>
+                <small>উত্তরা, ঢাকা · যাচাইকৃত ক্রেতা</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="review-card">
+            <div>
+              <div class="review-top">
+                <div class="review-stars" aria-label="৪.৫ তারকা রেটিং">★★★★☆</div>
+                <span class="review-tag">পেন্সিল ও কলম</span>
+              </div>
+              <p class="review-quote">“বাচ্চাদের হাতের লেখার জন্য গ্রিপ ভালো এমন পেন্সিল খুঁজছিলাম। খাতা ঘরের কালেকশন বেশ উপকারী লেগেছে, যোগাযোগ ব্যবস্থাও আন্তরিক।”[cite: 1]</p>
+            </div>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">র</div>
+              <div>
+                <strong>রফিকুল ইসলাম</strong>
+                <small>গাজীপুর · যাচাইকৃত ক্রেতা</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="review-card">
+            <div>
+              <div class="review-top">
+                <div class="review-stars" aria-label="৫ তারকা রেটিং">★★★★★</div>
+                <span class="review-tag">বিশেষ অফার</span>
+              </div>
+              <p class="review-quote">“একসাথে খাতা ও প্রয়োজনীয় স্টেশনারি পেয়ে দোকানে দৌড়াদৌড়ির ঝামেলা কমে গেছে। নতুন সেশনের প্রস্তুতির জন্য দারুণ সুবিধা।”[cite: 1]</p>
+            </div>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">ম</div>
+              <div>
+                <strong>মাহমুদা আক্তার</strong>
+                <small>চট্টগ্রাম · যাচাইকৃত ক্রেতা</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="review-card">
+            <div>
+              <div class="review-top">
+                <div class="review-stars" aria-label="৫ তারকা রেটিং">★★★★★</div>
+                <span class="review-tag">খাতা ও নোটবুক</span>
+              </div>
+              <p class="review-quote">“কভারের রঙ ও ডিজাইন বাচ্চাদের খুব পছন্দ হয়েছে। অর্ডারের আগে যা যা বলেছিল, ঠিক সেভাবেই পণ্য পেয়েছি।”[cite: 1]</p>
+            </div>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">ফ</div>
+              <div>
+                <strong>ফারহানা চৌধুরী</strong>
+                <small>সিলেট · যাচাইকৃত ক্রেতা</small>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="payment-strip" id="payment">
+      <div class="container">
+        <div class="section-head"><div class="kicker">🔐 সহজ পেমেন্ট</div><h2>আপনার সুবিধামতো পেমেন্ট করুন</h2><p>অনলাইন পেমেন্ট অথবা পণ্য হাতে পেয়ে টাকা দেওয়ার সুবিধা—উপলভ্যতার ভিত্তিতে।</p></div>
+        <div class="payment-grid">
+          <div class="payment"><div class="emoji">📱</div><strong>মোবাইল ফাইন্যান্স</strong><small>bKash · Nagad · Rocket · Upay</small></div>
+          <div class="payment"><div class="emoji">💳</div><strong>কার্ড / অনলাইন</strong><small>Visa ও সমর্থিত পেমেন্ট গেটওয়ে</small></div>
+          <div class="payment"><div class="emoji">💵</div><strong>Cash on Delivery</strong><small>ডেলিভারির সময় পেমেন্ট</small></div>
+          <div class="payment"><div class="emoji">🛡️</div><strong>নিরাপদ অর্ডার</strong><small>অর্ডারের আগে শর্ত জেনে নিন</small></div>
+        </div>
+        <p style="text-align:center;color:#7b8494;font-size:.86rem;margin-top:14px">নোট: অনলাইন পেমেন্ট এখনো যুক্ত না থাকলে সংশ্লিষ্ট গেটওয়ে ও মার্চেন্ট অ্যাকাউন্ট সেটআপ করার পর এই অপশন চালু করুন।</p>
+      </div>
+    </section>
+
+    <section style="background:#fff8dc">
+      <div class="container">
+        <div class="section-head"><div class="kicker">🌟 আমাদের প্রতিশ্রুতি</div><h2>শিশুর হাসি, অভিভাবকের নিশ্চিন্ততা</h2></div>
+        <div class="trust-grid">
+          <div class="trust-card"><div class="emoji">🧸</div><h3>শিশুবান্ধব পণ্য</h3><p>পণ্যের বয়স-উপযোগিতা ও বিবরণ দেখে বেছে নিন।</p></div>
+          <div class="trust-card"><div class="emoji">🏷️</div><h3>স্পষ্ট দাম</h3><p>পণ্যের মূল্য ও ডেলিভারি চার্জ অর্ডারের আগেই জানুন।</p></div>
+          <div class="trust-card"><div class="emoji">🚚</div><h3>ডেলিভারি সুবিধা</h3><p>আপনার এলাকার কভারেজ ও সম্ভাব্য সময় নিশ্চিত করে নিন।</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="order-section" id="order">
+      <div class="container order-grid">
+        <div class="order-intro">
+          <div class="eyebrow">🎒 শুরু হোক রঙিন পড়াশোনা</div>
+          <h2>এখনই অর্ডার করুন!</h2>
+          <p>আপনার পছন্দের পণ্য বেছে ফর্মটি পূরণ করুন। এরপর WhatsApp-এ অর্ডারের তথ্য পাঠানো যাবে। এটি ডেমো ফর্ম—আপনার আসল ব্যবসার যোগাযোগ নম্বর বসিয়ে নিন।</p>
+          <div class="contact-list" id="contact">
+            <a class="contact-link" href="https://www.facebook.com/" target="_blank" rel="noopener"><span>🔵</span> Facebook পেজে মেসেজ করুন</a>
+            <a class="contact-link" href="https://wa.me/8801312345678" target="_blank" rel="noopener"><span>🟢</span> WhatsApp-এ অর্ডার করুন</a>
+            <a class="contact-link" href="tel:+8801312345678"><span>📞</span> কল করুন: 01312-345678</a>
+          </div>
+        </div>
+        <form class="order-form" id="orderForm">
+          <h3>🛍️ অর্ডার ফর্ম</h3>
+          <div class="field"><label for="customerName">আপনার নাম *</label><input id="customerName" name="name" required placeholder="নাম লিখুন"></div>
+          <div class="field"><label for="phone">মোবাইল নম্বর *</label><input id="phone" name="phone" required inputmode="tel" placeholder="01XXXXXXXXX"></div>
+          <div class="field"><label for="product">পছন্দের পণ্য *</label>
+            <select id="product" name="product" required>
+              <option value="">পণ্য নির্বাচন করুন</option>
+              <option>খাতা ও নোটবুক</option><option>পেন্সিল ও কলম</option><option>জ্যামিতি বক্স</option><option>স্কুল কিট — ৳৪৯৯ (নমুনা মূল্য)</option><option>অন্যান্য স্টেশনারি</option>
+            </select>
+          </div>
+          <div class="field"><label for="address">ডেলিভারি ঠিকানা *</label><textarea id="address" name="address" rows="2" required placeholder="বাড়ি/রোড, এলাকা, জেলা"></textarea></div>
+          <div class="field"><label>পেমেন্ট পদ্ধতি *</label>
+            <div class="pay-options">
+              <label class="pay-option"><input type="radio" name="payment" value="Cash on Delivery" checked> 💵 Cash on Delivery</label>
+              <label class="pay-option"><input type="radio" name="payment" value="Online payment"> 📱 অনলাইন পেমেন্ট</label>
+            </div>
+          </div>
+          <div class="field"><label for="notes">অতিরিক্ত তথ্য (ঐচ্ছিক)</label><input id="notes" name="notes" placeholder="পরিমাণ বা বিশেষ অনুরোধ"></div>
+          <p class="form-note">ফর্মটি পাঠালে WhatsApp-এ অর্ডারের খসড়া তৈরি হবে। অর্ডার নিশ্চিত করার আগে দাম, স্টক ও ডেলিভারি চার্জ মিলিয়ে নিন।</p>
+          <button class="btn btn-yellow" type="submit" style="width:100%">WhatsApp-এ অর্ডার পাঠান →</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    
+    <div class="container">
+      <div class="footer-inner">
+        <div class="brand"><span class="brand-mark">📚</span><span>খাতা ঘর<small style="color:#d5dfef">KHATA GHOR</small></span></div>
+        <a class="btn btn-white" href="admin.html">🔐 অ্যাডমিন</a>
+        <div><strong>পড়াশোনার সবকিছু, এক ঠিকানায়। 💛</strong><p>শিশুর শেখা হোক আরও আনন্দের!</p></div>
+        <div class="socials">
+          <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noopener">f</a>
+          <a href="https://www.youtube.com/" aria-label="YouTube" target="_blank" rel="noopener">▶</a>
+          <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noopener">◎</a>
+        </div>
+      </div>
+      <div class="tiny">© <span id="year"></span> খাতা ঘর। সর্বস্বত্ব সংরক্ষিত। নমুনা ওয়েবসাইট—প্রকাশের আগে পণ্যের তথ্য, যোগাযোগ নম্বর, সোশ্যাল লিংক, মূল্য ও পেমেন্ট ব্যবস্থা আপডেট করুন।</div>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    // IMPORTANT: Replace this with your real WhatsApp number, country code included.
+    const WHATSAPP_NUMBER = "8801312345678";
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Clicking a category preselects that product in the order form.
+    document.querySelectorAll("[data-product]").forEach(card => {
+      card.addEventListener("click", () => {
+        const product = card.dataset.product;
+        const select = document.getElementById("product");
+        for (const option of select.options) {
+          if (option.text.includes(product)) { select.value = option.value; break; }
+        }
+      });
+    });
+
+    document.getElementById("orderForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const form = new FormData(this);
+      const message = [
+        "আসসালামু আলাইকুম, খাতা ঘর থেকে অর্ডার করতে চাই।",
+        "নাম: " + form.get("name"),
+        "মোবাইল: " + form.get("phone"),
+        "পণ্য: " + form.get("product"),
+        "ঠিকানা: " + form.get("address"),
+        "পেমেন্ট: " + form.get("payment"),
+        "অতিরিক্ত তথ্য: " + (form.get("notes") || "নেই")
+      ].join("\n");
+      const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+      window.open(url, "_blank", "noopener");
+    });
+
+    // Replace the placeholder preview with your own YouTube video URL.
+    document.getElementById("playVideo").addEventListener("click", () => {
+      const toast = document.getElementById("toast");
+      toast.textContent = "আপনার পণ্যের YouTube ভিডিও লিংক HTML-এর video section-এ যোগ করুন।";
+      toast.style.display = "block";
+      window.setTimeout(() => toast.style.display = "none", 4000);
+    });
+  </script>
+</body>
+</html>
